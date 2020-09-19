@@ -20,7 +20,7 @@ class BinarySearchTree {
     private var root: TreeNode? = null
     fun insert(value: Int) {
         if (root == null) {
-            root = TreeNode(value)
+            root = TreeNode(value, 0)
         } else {
             root!!.insert(value)
         }
