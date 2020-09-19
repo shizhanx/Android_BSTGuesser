@@ -66,6 +66,7 @@ class BinaryTreeView(context: Context?, private val textView: TextView) : View(c
                         invalidate()
                         if (hitValue != targetValue) {
                             tree!!.invalidateNode(targetValue)
+                            searchSequence!!.remove(hitValue)
                         }
                         searchPosition++
                         updateMessage()
