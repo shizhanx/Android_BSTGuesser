@@ -18,10 +18,10 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 
-class TreeNode(private val value: Int) {
+class TreeNode(val value: Int) {
     private val height = 0
-    private var left: TreeNode? = null
-    private var right: TreeNode? = null
+    var left: TreeNode? = null
+    var right: TreeNode? = null
     private var showValue = false
     private var x = 0
     private var y = 0

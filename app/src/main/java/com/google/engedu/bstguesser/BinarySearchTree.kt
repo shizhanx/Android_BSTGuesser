@@ -41,12 +41,11 @@ class BinarySearchTree {
     }
 
     private fun search(value: Int): TreeNode? {
-        /**
-         *
-         * YOUR CODE GOES HERE
-         *
-         */
-        return root
+        var cur = root
+        while (cur != null && cur.value != value) {
+            cur = if (value < cur.value) cur.left else cur.right
+        }
+        return cur
     }
 
     fun invalidateNode(targetValue: Int) {
