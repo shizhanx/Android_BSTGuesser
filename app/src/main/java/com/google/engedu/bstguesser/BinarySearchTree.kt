@@ -21,7 +21,6 @@ class BinarySearchTree {
     fun insert(value: Int) {
         if (root == null) {
             root = TreeNode(value)
-            return
         } else {
             root!!.insert(value)
         }

@@ -18,20 +18,20 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 
-class TreeNode(val value: Int) {
+class TreeNode(private val value: Int) {
     private val height = 0
-    protected var left: TreeNode? = null
-    protected var right: TreeNode? = null
+    private var left: TreeNode? = null
+    private var right: TreeNode? = null
     private var showValue = false
     private var x = 0
     private var y = 0
     private var color = Color.rgb(150, 150, 250)
     fun insert(valueToInsert: Int) {
-        /**
-         *
-         * YOUR CODE GOES HERE
-         *
-         */
+        if (valueToInsert > value) {
+            if (right != null) right!!.insert(valueToInsert) else right = TreeNode(valueToInsert)
+        } else {
+            if (left != null) left!!.insert(valueToInsert) else left = TreeNode(valueToInsert)
+        }
     }
 
     fun positionSelf(x0: Int, x1: Int, y: Int) {
