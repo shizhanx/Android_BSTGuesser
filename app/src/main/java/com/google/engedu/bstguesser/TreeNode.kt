@@ -17,8 +17,9 @@ package com.google.engedu.bstguesser
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import kotlin.math.max
 
-class TreeNode(val value: Int, val height: Int) {
+class TreeNode(val value: Int, var height: Int) {
     var left: TreeNode? = null
     var right: TreeNode? = null
     private var showValue = false
@@ -27,10 +28,17 @@ class TreeNode(val value: Int, val height: Int) {
     private var color = Color.rgb(150, 150, 250)
     fun insert(valueToInsert: Int) {
         if (valueToInsert > value) {
-            if (right != null) right!!.insert(valueToInsert) else right = TreeNode(valueToInsert, height+1)
+            if (right != null) right!!.insert(valueToInsert) else right = TreeNode(valueToInsert, 0)
         } else {
-            if (left != null) left!!.insert(valueToInsert) else left = TreeNode(valueToInsert, height+1)
+            if (left != null) left!!.insert(valueToInsert) else left = TreeNode(valueToInsert, 0)
         }
+        updateHeight()
+    }
+
+    fun updateHeight() {
+        val leftHeight = if (left == null) -1 else left!!.height
+        val rightHeight = if (right == null) -1 else right!!.height
+        height = max(leftHeight, rightHeight) + 1
     }
 
     fun positionSelf(x0: Int, x1: Int, y: Int) {
