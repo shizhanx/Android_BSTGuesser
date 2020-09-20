@@ -22,6 +22,7 @@ import kotlin.math.max
 class TreeNode(val value: Int, var height: Int) {
     var left: TreeNode? = null
     var right: TreeNode? = null
+    var balanceFactor = 0
     private var showValue = false
     private var x = 0
     private var y = 0
@@ -32,13 +33,53 @@ class TreeNode(val value: Int, var height: Int) {
         } else {
             if (left != null) left!!.insert(valueToInsert) else left = TreeNode(valueToInsert, 0)
         }
+        if(left?.balanceFactor == 2 || left?.balanceFactor == -2) {
+            left = reBalance(left!!)
+        }else if (right?.balanceFactor == 2 || right?.balanceFactor == -2) {
+            right = reBalance(right!!)
+        }
         updateHeight()
     }
 
-    fun updateHeight() {
+    fun reBalance(node: TreeNode): TreeNode {
+        return if (node.balanceFactor == -2) {
+            if (node.right!!.balanceFactor == 1) {
+                node.right = rightShift(node.right!!)
+            }
+            leftShift(node)
+        } else {
+            if (node.left!!.balanceFactor == -1) {
+                node.left = leftShift(node.left!!)
+            }
+            rightShift(node)
+        }
+    }
+
+    private fun leftShift(node: TreeNode): TreeNode {
+        val exRight = node.right!!
+        val exRightLeft = exRight.left
+        exRight.left = node
+        node.right = exRightLeft
+        node.updateHeight()
+        exRight.updateHeight()
+        return exRight
+    }
+
+    private fun rightShift(node: TreeNode): TreeNode {
+        val exLeft = node.left!!
+        val exLeftRight = exLeft.right
+        exLeft.right = node
+        node.left = exLeftRight
+        node.updateHeight()
+        exLeft.updateHeight()
+        return exLeft
+    }
+
+    private fun updateHeight() {
         val leftHeight = if (left == null) -1 else left!!.height
         val rightHeight = if (right == null) -1 else right!!.height
         height = max(leftHeight, rightHeight) + 1
+        balanceFactor = leftHeight - rightHeight
     }
 
     fun positionSelf(x0: Int, x1: Int, y: Int) {
