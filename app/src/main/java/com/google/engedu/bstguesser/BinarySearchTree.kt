@@ -20,10 +20,51 @@ class BinarySearchTree {
     private var root: TreeNode? = null
     fun insert(value: Int) {
         if (root == null) {
-            root = TreeNode(value, 0)
+            root = TreeNode(value)
         } else {
             root!!.insert(value)
+            reBalance(root!!)
         }
+    }
+
+    private fun reBalance(node: TreeNode): TreeNode {
+        if (node.left != null) node.left = reBalance(node.left!!)
+        if (node.right != null) node.right = reBalance(node.right!!)
+        return when (node.balanceFactor) {
+            -2 -> {
+                if (node.right!!.balanceFactor == 1) {
+                    node.right = rightShift(node.right!!)
+                }
+                leftShift(node)
+            }
+            2 -> {
+                if (node.left!!.balanceFactor == -1) {
+                    node.left = leftShift(node.left!!)
+                }
+                rightShift(node)
+            }
+            else -> node
+        }
+    }
+
+    private fun leftShift(node: TreeNode): TreeNode {
+        val exRight = node.right!!
+        val exRightLeft = exRight.left
+        exRight.left = node
+        node.right = exRightLeft
+        node.updateHeight()
+        exRight.updateHeight()
+        return exRight
+    }
+
+    private fun rightShift(node: TreeNode): TreeNode {
+        val exLeft = node.left!!
+        val exLeftRight = exLeft.right
+        exLeft.right = node
+        node.left = exLeftRight
+        node.updateHeight()
+        exLeft.updateHeight()
+        return exLeft
     }
 
     fun positionNodes(width: Int) {

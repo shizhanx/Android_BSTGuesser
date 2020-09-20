@@ -19,7 +19,8 @@ import android.graphics.Color
 import android.graphics.Paint
 import kotlin.math.max
 
-class TreeNode(val value: Int, var height: Int) {
+class TreeNode(val value: Int) {
+    private var height = 0
     var left: TreeNode? = null
     var right: TreeNode? = null
     var balanceFactor = 0
@@ -29,53 +30,14 @@ class TreeNode(val value: Int, var height: Int) {
     private var color = Color.rgb(150, 150, 250)
     fun insert(valueToInsert: Int) {
         if (valueToInsert > value) {
-            if (right != null) right!!.insert(valueToInsert) else right = TreeNode(valueToInsert, 0)
+            if (right != null) right!!.insert(valueToInsert) else right = TreeNode(valueToInsert)
         } else {
-            if (left != null) left!!.insert(valueToInsert) else left = TreeNode(valueToInsert, 0)
-        }
-        if(left?.balanceFactor == 2 || left?.balanceFactor == -2) {
-            left = reBalance(left!!)
-        }else if (right?.balanceFactor == 2 || right?.balanceFactor == -2) {
-            right = reBalance(right!!)
+            if (left != null) left!!.insert(valueToInsert) else left = TreeNode(valueToInsert)
         }
         updateHeight()
     }
 
-    fun reBalance(node: TreeNode): TreeNode {
-        return if (node.balanceFactor == -2) {
-            if (node.right!!.balanceFactor == 1) {
-                node.right = rightShift(node.right!!)
-            }
-            leftShift(node)
-        } else {
-            if (node.left!!.balanceFactor == -1) {
-                node.left = leftShift(node.left!!)
-            }
-            rightShift(node)
-        }
-    }
-
-    private fun leftShift(node: TreeNode): TreeNode {
-        val exRight = node.right!!
-        val exRightLeft = exRight.left
-        exRight.left = node
-        node.right = exRightLeft
-        node.updateHeight()
-        exRight.updateHeight()
-        return exRight
-    }
-
-    private fun rightShift(node: TreeNode): TreeNode {
-        val exLeft = node.left!!
-        val exLeftRight = exLeft.right
-        exLeft.right = node
-        node.left = exLeftRight
-        node.updateHeight()
-        exLeft.updateHeight()
-        return exLeft
-    }
-
-    private fun updateHeight() {
+    fun updateHeight() {
         val leftHeight = if (left == null) -1 else left!!.height
         val rightHeight = if (right == null) -1 else right!!.height
         height = max(leftHeight, rightHeight) + 1
