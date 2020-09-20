@@ -23,7 +23,7 @@ class BinarySearchTree {
             root = TreeNode(value)
         } else {
             root!!.insert(value)
-            reBalance(root!!)
+            root = reBalance(root!!)
         }
     }
 
